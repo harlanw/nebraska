@@ -1,0 +1,7 @@
+#!/bin/bash
+
+if [ -e '/dev/ttyUSB2' ]; then
+	cat -v < /dev/ttyUSB2
+else
+	echo "error: modem not attached"
+fi

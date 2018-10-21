@@ -1,0 +1,31 @@
+--- drivers/usb/serial/option.old	2018-10-21 14:04:36.690233009 -0700
++++ drivers/usb/serial/option.c	2018-10-21 14:04:41.207176540 -0700
+@@ -43,6 +43,10 @@
+ #include <linux/usb/serial.h>
+ #include "usb-wwan.h"
+ 
++/* NEBRASKA */
++#define SIMCOM_WCDMA_VENDOR_ID		0x05C6
++#define SIMCOM_WCDMA_PRODUCT_ID		0x9000
++
+ /* Function prototypes */
+ static int  option_probe(struct usb_serial *serial,
+ 			const struct usb_device_id *id);
+@@ -564,6 +568,7 @@
+ 
+ 
+ static const struct usb_device_id option_ids[] = {
++	{ USB_DEVICE(SIMCOM_WCDMA_VENDOR_ID, SIMCOM_WCDMA_PRODUCT_ID) }, /* NEBRASKA */
+ 	{ USB_DEVICE(OPTION_VENDOR_ID, OPTION_PRODUCT_COLT) },
+ 	{ USB_DEVICE(OPTION_VENDOR_ID, OPTION_PRODUCT_RICOLA) },
+ 	{ USB_DEVICE(OPTION_VENDOR_ID, OPTION_PRODUCT_RICOLA_LIGHT) },
+--- drivers/usb/serial/usb_wwan.old	2018-10-21 14:06:02.236163538 -0700
++++ drivers/usb/serial/usb_wwan.c	2018-10-21 14:05:50.396311557 -0700
+@@ -544,6 +544,7 @@
+ 						USB_DIR_OUT, port,
+ 						buffer, OUT_BUFLEN,
+ 						usb_wwan_outdat_callback);
++		urb->transfer_flags |= URB_ZERO_PACKET; /* NEBRASKA */
+ 		portdata->out_urbs[i] = urb;
+ 	}
+ 

@@ -1,0 +1,18 @@
+#!/bin/bash
+
+ATCOM='/dev/ttyUSB2'
+
+AT_ECHO='E'
+AT_INFO='I'
+AT_RSSI='+CSQ'
+
+STARTUP_CMDS=( $AT_ECHO $AT_INFO $AT_RSSI)
+STARTUP_CMDS=( "${STARTUP_CMDS[@]/#/AT}" )
+STARTUP_CMDS=( "${STARTUP_CMDS[@]/%/\\r\\n}" )
+
+if [ -e $ATCOM ]; then
+	stty -F $ATCOM -echo -onlcr
+	echo -e -n "${STARTUP_CMDS[@]}" >> $ATCOM
+else
+	echo "error: modem not attached"
+fi
